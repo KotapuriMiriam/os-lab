@@ -1,0 +1,97 @@
+#include <stdio.h>
+
+int main() 
+{
+    int rs[50], i, j, k, m, f, cntr[20], a[20], min, pf = 0;
+
+    // Input number of page references
+    printf("Enter the number of page references: ");
+    scanf("%d", &m);
+
+    // Input reference string
+    printf("Enter the reference string: ");
+    for (i = 0; i < m; i++)
+        scanf("%d", &rs[i]);
+
+    // Input number of frames
+    printf("Enter the number of frames: ");
+    scanf("%d", &f);
+
+    // Initialize counters and frames
+    for (i = 0; i < f; i++) 
+    {
+        cntr[i] = 0; // Usage counter
+        a[i] = -1;   // Empty frame
+    }
+
+    printf("\nThe Page Replacement Process is:\n");
+
+    for (i = 0; i < m; i++) 
+    {
+        // Check if the page is already in a frame
+        for (j = 0; j < f; j++) 
+        {
+            if (rs[i] == a[j]) 
+            {
+                cntr[j]++; // Increment usage counter
+                break;
+            }
+        }
+
+        // If the page is not found, replace using LFU logic
+        if (j == f) 
+        {
+            min = 0;
+
+            // Find the least frequently used frame
+            for (k = 1; k < f; k++) 
+            {
+                if (cntr[k] < cntr[min]) 
+                    min = k;
+            }
+
+            // Replace the page in the selected frame
+            a[min] = rs[i];
+            cntr[min] = 1; // Reset usage counter for the new page
+            pf++;          // Increment page fault count
+        }
+
+        // Print the current state of frames
+        for (j = 0; j < f; j++) 
+        {
+            if (a[j] != -1)
+                printf("\t%d", a[j]);
+            else
+                printf("\t-"); // Empty frame
+        }
+
+        if (j == f) 
+            printf("\tPF No. %d", pf);
+
+        printf("\n");
+    }
+
+    // Print total number of page faults
+    printf("\nTotal number of page faults: %d\n", pf);
+
+    return 0;
+}
+input
+//Enter the number of page references: 12
+Enter the reference string: 1 2 3 4 2 1 5 2 4 5 3 2
+Enter the number of frames: 3
+output
+//The Page Replacement Process is:
+	1	-	-	PF No. 1
+	1	2	-	PF No. 2
+	1	2	3	PF No. 3
+	4	2	3	PF No. 4
+	4	2	3
+	4	1	3	PF No. 5
+	5	1	3	PF No. 6
+	5	2	3	PF No. 7
+	4	2	3	PF No. 8
+	4	2	5	PF No. 9
+	3	2	5	PF No. 10
+	3	2	5
+Total number of page faults: 10
