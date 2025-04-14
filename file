@@ -56,5 +56,5 @@ Enter number of blocks in file 3: 3
 Enter the file name to be searched: B
 
 FILE NAME 	START BLOCK	  NO OF BLOCKS	 BLOCKS OCCUPIED
-B		           17		           4		       17 18 19 20 
+B		           17		   4           17 18 19 20 
 
